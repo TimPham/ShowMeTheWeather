@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Show Me The Weather</string>
+    <string name="app_start">Ok. Now Show Me The Weather!</string>
+    <string name="app_disclaimer">By using this application, you acknowledge that the application may collect information pertaining to your location to report weather in your area.</string>
+</resources>
