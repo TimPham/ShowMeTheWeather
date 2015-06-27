@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Add City button -->
+    <item android:id="@+id/addCity" android:icon="@drawable/ic_launcher" android:title="@string/app_addcity" android:showAsAction="always"/>
+
+    <!-- Remove City button -->
+    <item android:id="@+id/removeCity" android:icon="@drawable/ic_launcher" android:title="@string/app_removecity" android:showAsAction="always"/>
+
+    <!-- Additional Options -->
+    <item android:id="@+id/settingsMenu" android:title="@string/app_settingsmenu" android:showAsAction="never"/>
+    <item android:id="@+id/aboutMenu" android:title="@string/app_aboutmenu" android:showAsAction="never"/>
+</menu>
