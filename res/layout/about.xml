@@ -12,7 +12,7 @@
         android:scaleType="center"
         android:adjustViewBounds="true"
         android:src="@drawable/splash"
-    />
+        android:layout_gravity="center_horizontal"/>
 
     <!-- Wrap text in a padded container -->
     <LinearLayout
@@ -49,30 +49,32 @@
     </LinearLayout>
 
     <!-- Return button -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1"
     >
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.25"
-        />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerInParent="true"
             android:text="@string/app_return"
-            android:layout_weight="0.5"
             android:id="@+id/btnReturnApplication"
             android:onClick="returnToApplication"
         />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.25"
+    </RelativeLayout>
+
+    <!-- GitHub Project button -->
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/app_github_label"
+            android:id="@+id/btnGoToGitHub"
+            android:onClick="goToGitHubProject"
         />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

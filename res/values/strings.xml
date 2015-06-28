@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Show Me The Weather</string>
+    <string name="app_name_shorthand">SMTW!</string>
+    <string name="app_github_label">Go To ShowMeTheWeather Project on GitHub</string>
+    <string name="app_github_link">https://github.com/TimPham/ShowMeTheWeather</string>
     <string name="app_version">Version 0.1</string>
     <string name="app_description">Determines the weather conditions, history and forecast by city or GPS location.</string>
     <string name="app_return">Go Back</string>

@@ -1,6 +1,9 @@
 package com.smt.weather;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 
 // Our About activity which shows application information
 public class WeatherApplicationApplicationAboutActivity extends WeatherApplicationSubActivity {
@@ -12,5 +15,12 @@ public class WeatherApplicationApplicationAboutActivity extends WeatherApplicati
 
         // Use the About Application layout
         setContentView(R.layout.about);
+    }
+
+    // Handle GitHub button press
+    public void goToGitHubProject(View view) {
+        Intent launchGitHubIntent = new Intent(Intent.ACTION_VIEW);
+        launchGitHubIntent.setData(Uri.parse(this.getString(R.string.app_github_link)));
+        startActivity(launchGitHubIntent);
     }
 }

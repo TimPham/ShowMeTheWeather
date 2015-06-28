@@ -26,7 +26,7 @@ public class WeatherApplicationActivity extends Activity {
         super.onCreateOptionsMenu(menu);
 
         // Get an instance of the MenuInflater class
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = this.getMenuInflater();
 
         // Now create our menu
         inflater.inflate(R.menu.menu, menu);
