@@ -3,20 +3,31 @@ package com.smt.weather;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 // Our Application activity which handles client input
 public class WeatherApplicationActivity extends Activity {
+    // Field for our WeatherApplicationClock object
+    WeatherApplicationClock waClock;
+
     // Initialize the activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Call our superclass onCreate function
         super.onCreate(savedInstanceState);
 
+        // Create a Handler object
+        Handler handler = new Handler();
+
         // Use the main application layout
         setContentView(R.layout.main);
+
+        // Create our WeatherApplicationClock object
+        this.waClock = new WeatherApplicationClock(handler, (TextView)this.findViewById(R.id.currentTime));
     }
 
     // Initialize our application's menu
@@ -66,5 +77,35 @@ public class WeatherApplicationActivity extends Activity {
                 // Catch-all if it's not on of the ones above or has not been implemented!
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // Resume the timer when the activity has focus
+    @Override
+    public void onResume() {
+        // Call our superclass onResume function
+        super.onResume();
+
+        // Start the clock again
+        this.waClock.start();
+    }
+
+    // Executed when the Activity loses focus/paused
+    @Override
+    public void onPause() {
+        // Call our superclass onPause function
+        super.onPause();
+
+        // Stop the clock
+        this.waClock.stop();
+    }
+
+    // Executed when the Activity is stopped
+    @Override
+    public void onStop() {
+        // Call our superclass onStop function
+        super.onStop();
+
+        // Stop the clock
+        this.waClock.stop();
     }
 }
