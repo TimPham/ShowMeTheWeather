@@ -4,11 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Parcel;
 
 import java.util.HashMap;
 
-public class WeatherApplicationConfiguration extends WeatherApplicationDB {
+public class WeatherApplicationConfigurationModel extends WeatherApplicationDB {
     public static final int UNIT_KELVIN = 0;
     public static final int UNIT_CELSIUS = 1;
     public static final int UNIT_FAHRENHEIT = 2;
@@ -20,59 +19,53 @@ public class WeatherApplicationConfiguration extends WeatherApplicationDB {
     protected static final String TABLE_PK = "configuration_id";
     protected static final String COLUMN_UNIT = "temperature_unit_setting";
     protected static final String COLUMN_GEOLOCATION = "geo_setting";
-    protected static final String TABLE_CREATE_QUERY = "CREATE TABLE `" + WeatherApplicationConfiguration.TABLE_NAME + "` (" +
-                                                            WeatherApplicationConfiguration.TABLE_PK + " INTEGER PRIMARY KEY NOT NULL, " +
-                                                            WeatherApplicationConfiguration.COLUMN_UNIT + " INTEGER NOT NULL DEFAULT 1, " +
-                                                            WeatherApplicationConfiguration.COLUMN_GEOLOCATION + " INTEGER NOT NULL DEFAULT 1" +
+    protected static final String TABLE_CREATE_QUERY = "CREATE TABLE IF NOT EXISTS `" + WeatherApplicationConfigurationModel.TABLE_NAME + "` (" +
+                                                            WeatherApplicationConfigurationModel.TABLE_PK + " INTEGER PRIMARY KEY NOT NULL, " +
+                                                            WeatherApplicationConfigurationModel.COLUMN_UNIT + " INTEGER NOT NULL DEFAULT 1, " +
+                                                            WeatherApplicationConfigurationModel.COLUMN_GEOLOCATION + " INTEGER NOT NULL DEFAULT 1" +
                                                         ");";
-    protected static final String[] COLUMNS = { WeatherApplicationConfiguration.COLUMN_UNIT, WeatherApplicationConfiguration.COLUMN_GEOLOCATION };
-    protected static final String WHERE_FILTER = WeatherApplicationConfiguration.TABLE_PK + " = ?";
+    protected static final String[] COLUMNS = { WeatherApplicationConfigurationModel.COLUMN_UNIT, WeatherApplicationConfigurationModel.COLUMN_GEOLOCATION };
+    protected static final String WHERE_FILTER = WeatherApplicationConfigurationModel.TABLE_PK + " = ?";
     protected static final String[] WHERE_FILTER_VALUE = { "1" };
 
-    // Constructor for WeatherApplicationConfiguration
-    public WeatherApplicationConfiguration(Context context) {
+    // Constructor for WeatherApplicationConfigurationModel
+    public WeatherApplicationConfigurationModel(Context context) {
         // Call WeatherApplicationDB constructor!
         super(context);
-    }
 
-    // Create our table
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        // Create our table!
-        db.execSQL(WeatherApplicationConfiguration.TABLE_CREATE_QUERY);
-    }
+        // The onCreate method doesn't get invoked unless the SQLite database is missing/not created.
+        // I have added this here to ensure that the table exists!
+        // Try to create the table if it doesn't exist
+        try {
+            // Get SQLite Database object
+            SQLiteDatabase db = this.getWritableDatabase();
 
-    // Not used, but required
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Nothing to do
-    }
-
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Nothing to do
+            // Try to create table -- if it already exists nothing will happen!
+            db.execSQL(WeatherApplicationConfigurationModel.TABLE_CREATE_QUERY);
+        }
+        catch (Exception e) { }
     }
 
     // Retrieve our configuration parameters
     public HashMap<String, Integer> getConfigurationData() {
         // Initialize our HashMap which will hold our parameters
-        HashMap<String, Integer> mData = new HashMap<String, Integer>();
+        HashMap<String, Integer> mData = new HashMap<>();
 
         // Add default parameters
-        mData.put("unit", WeatherApplicationConfiguration.UNIT_CELSIUS);
-        mData.put("geo", WeatherApplicationConfiguration.GEO_ENABLED);
+        mData.put("unit", WeatherApplicationConfigurationModel.UNIT_CELSIUS);
+        mData.put("geo", WeatherApplicationConfigurationModel.GEO_ENABLED);
 
         // Try to load our configuration file
         try {
-            // Get SQLite Database file
+            // Get SQLite database object
             SQLiteDatabase db = this.getReadableDatabase();
 
             // Run query to retrieve configuration
             Cursor cursor = db.query(
-                WeatherApplicationConfiguration.TABLE_NAME,
-                WeatherApplicationConfiguration.COLUMNS,
-                WeatherApplicationConfiguration.WHERE_FILTER,
-                WeatherApplicationConfiguration.WHERE_FILTER_VALUE,
+                WeatherApplicationConfigurationModel.TABLE_NAME,
+                WeatherApplicationConfigurationModel.COLUMNS,
+                WeatherApplicationConfigurationModel.WHERE_FILTER,
+                WeatherApplicationConfigurationModel.WHERE_FILTER_VALUE,
                 null,
                 null,
                 null
@@ -84,17 +77,17 @@ public class WeatherApplicationConfiguration extends WeatherApplicationDB {
                 cursor.moveToFirst();
 
                 // Read the data
-                String degrees = cursor.getString(cursor.getColumnIndex(WeatherApplicationConfiguration.COLUMN_UNIT));
-                String geolocation = cursor.getString(cursor.getColumnIndex(WeatherApplicationConfiguration.COLUMN_GEOLOCATION));
+                String degrees = cursor.getString(cursor.getColumnIndex(WeatherApplicationConfigurationModel.COLUMN_UNIT));
+                String geolocation = cursor.getString(cursor.getColumnIndex(WeatherApplicationConfigurationModel.COLUMN_GEOLOCATION));
 
                 // Try to convert from a String to an Integer to determine the temperature unit to use
                 try {
                     // Convert
                     Integer degrees_setting = Integer.parseInt(degrees);
                     // Conversion ok, now determine if a valid option was selected
-                    if (degrees_setting == WeatherApplicationConfiguration.UNIT_KELVIN ||
-                        degrees_setting == WeatherApplicationConfiguration.UNIT_CELSIUS ||
-                        degrees_setting == WeatherApplicationConfiguration.UNIT_FAHRENHEIT) {
+                    if (degrees_setting == WeatherApplicationConfigurationModel.UNIT_KELVIN ||
+                        degrees_setting == WeatherApplicationConfigurationModel.UNIT_CELSIUS ||
+                        degrees_setting == WeatherApplicationConfigurationModel.UNIT_FAHRENHEIT) {
                         // Update the unit to use in the application
                         mData.put("unit", degrees_setting);
                     }
@@ -106,8 +99,8 @@ public class WeatherApplicationConfiguration extends WeatherApplicationDB {
                     // Convert
                     Integer geo_setting = Integer.parseInt(geolocation);
                     // Conversion ok, now determine if a valid option was selected
-                    if (geo_setting == WeatherApplicationConfiguration.GEO_DISABLED ||
-                        geo_setting == WeatherApplicationConfiguration.GEO_ENABLED) {
+                    if (geo_setting == WeatherApplicationConfigurationModel.GEO_DISABLED ||
+                        geo_setting == WeatherApplicationConfigurationModel.GEO_ENABLED) {
                         // Update the unit to use in the application
                         mData.put("geo", geo_setting);
                     }
@@ -128,7 +121,7 @@ public class WeatherApplicationConfiguration extends WeatherApplicationDB {
     public boolean saveConfigurationData(HashMap<String, Integer> hm) {
         // Try to save our configuration parameters
         try {
-            // Get SQLite Database file
+            // Get SQLite database object
             SQLiteDatabase db = this.getWritableDatabase();
 
             // Container to hold the parameters to update
@@ -143,18 +136,18 @@ public class WeatherApplicationConfiguration extends WeatherApplicationDB {
 
             // Determine if degree parameter was passed in
             if (degree_option != null) {
-                columns_to_update.put(WeatherApplicationConfiguration.COLUMN_UNIT, degree_option.toString());
+                columns_to_update.put(WeatherApplicationConfigurationModel.COLUMN_UNIT, degree_option.toString());
                 column_to_update = true;
             }
 
             // Determine if geolocation parameter was passed in
             if (geo_option != null) {
-                columns_to_update.put(WeatherApplicationConfiguration.COLUMN_GEOLOCATION, geo_option.toString());
+                columns_to_update.put(WeatherApplicationConfigurationModel.COLUMN_GEOLOCATION, geo_option.toString());
                 column_to_update = true;
             }
 
             // Added configuration_id parameter
-            columns_to_update.put(WeatherApplicationConfiguration.TABLE_PK, "1");
+            columns_to_update.put(WeatherApplicationConfigurationModel.TABLE_PK, "1");
 
             // Anything to update?
             if (column_to_update) {
@@ -163,7 +156,7 @@ public class WeatherApplicationConfiguration extends WeatherApplicationDB {
 
                 // Run query to save configuration
                 long success = db.insertWithOnConflict(
-                    WeatherApplicationConfiguration.TABLE_NAME,
+                    WeatherApplicationConfigurationModel.TABLE_NAME,
                     null,
                     columns_to_update,
                     SQLiteDatabase.CONFLICT_IGNORE
@@ -173,10 +166,10 @@ public class WeatherApplicationConfiguration extends WeatherApplicationDB {
                 if (success == -1) {
                     // Run query to retrieve configuration
                     success = db.update(
-                        WeatherApplicationConfiguration.TABLE_NAME,
+                        WeatherApplicationConfigurationModel.TABLE_NAME,
                         columns_to_update,
-                        WeatherApplicationConfiguration.WHERE_FILTER,
-                        WeatherApplicationConfiguration.WHERE_FILTER_VALUE
+                        WeatherApplicationConfigurationModel.WHERE_FILTER,
+                        WeatherApplicationConfigurationModel.WHERE_FILTER_VALUE
                     );
                 }
 
@@ -195,13 +188,12 @@ public class WeatherApplicationConfiguration extends WeatherApplicationDB {
 
     // Function to purge configuration data
     public void clearConfigurationData() {
-        // Try to load our configuration file
         try {
-            // Get SQLite Database file
+            // Get SQLite database object
             SQLiteDatabase db = this.getWritableDatabase();
 
             // Truncate table
-            db.delete(WeatherApplicationConfiguration.TABLE_NAME, null, null);
+            db.delete(WeatherApplicationConfigurationModel.TABLE_NAME, null, null);
         }
         catch (Exception e) { }
     }

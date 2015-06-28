@@ -1,8 +1,6 @@
 package com.smt.weather;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -42,7 +40,7 @@ public class WeatherApplicationSettingsActivity extends WeatherApplicationSubAct
             // Update our switch to reflect the current setting
             this.conf_switch = (Switch)this.findViewById(R.id.geolocationOption);
             // Determine which option is chosen
-            if (geo_config_option == WeatherApplicationConfiguration.GEO_DISABLED) {
+            if (geo_config_option == WeatherApplicationConfigurationModel.GEO_DISABLED) {
                 // Disabled
                 this.conf_switch.setChecked(false);
             }
@@ -67,9 +65,9 @@ public class WeatherApplicationSettingsActivity extends WeatherApplicationSubAct
             Integer selected_index = this.conf_spinner.getSelectedItemPosition();
 
             // Ensure that the option is one of the following: Kelvin, Celsius or Fahrenheit
-            if (selected_index == WeatherApplicationConfiguration.UNIT_KELVIN ||
-                selected_index == WeatherApplicationConfiguration.UNIT_CELSIUS ||
-                selected_index == WeatherApplicationConfiguration.UNIT_FAHRENHEIT) {
+            if (selected_index == WeatherApplicationConfigurationModel.UNIT_KELVIN ||
+                selected_index == WeatherApplicationConfigurationModel.UNIT_CELSIUS ||
+                selected_index == WeatherApplicationConfigurationModel.UNIT_FAHRENHEIT) {
                 // Save setting
                 bundle.putInt("unit", selected_index);
             }
@@ -84,11 +82,11 @@ public class WeatherApplicationSettingsActivity extends WeatherApplicationSubAct
             // Check
             if (checked_state) {
                 // Enabled
-                bundle.putInt("geo", WeatherApplicationConfiguration.GEO_ENABLED);
+                bundle.putInt("geo", WeatherApplicationConfigurationModel.GEO_ENABLED);
             }
             else {
                 // Disabled
-                bundle.putInt("geo", WeatherApplicationConfiguration.GEO_DISABLED);
+                bundle.putInt("geo", WeatherApplicationConfigurationModel.GEO_DISABLED);
             }
         }
 

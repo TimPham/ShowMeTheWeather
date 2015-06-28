@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 // The base class that configuration and data storage classes will use
-public abstract class WeatherApplicationDB extends SQLiteOpenHelper {
+public class WeatherApplicationDB extends SQLiteOpenHelper {
     // Weather Application Database information
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "WeatherApplicationData.db";
@@ -15,11 +15,20 @@ public abstract class WeatherApplicationDB extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // Methods the children classes will implement
-    // Method to create our database table
-    public abstract void onCreate(SQLiteDatabase db);
+    // Methods the children classes can implement
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        // Nothing to do
+    }
 
-    // Not used
-    public abstract void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
-    public abstract void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion);
+    // Not used, but required
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Nothing to do
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Nothing to do
+    }
 }
