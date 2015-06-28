@@ -3,7 +3,6 @@ package com.smt.weather;
 import android.os.Handler;
 import android.widget.TextView;
 
-import java.io.Console;
 import java.util.Calendar;
 
 public class WeatherApplicationClock implements Runnable {
@@ -14,13 +13,13 @@ public class WeatherApplicationClock implements Runnable {
     public static final int updateInterval = 1000;
 
     // The TextView that we will use to display the time
-    TextView textView;
+    private TextView textView;
 
     // The Handler that controls the update of time
-    Handler handler;
+    private Handler handler;
 
     // The flag that controls the run state of the time update
-    boolean runUpdate;
+    private boolean runUpdate;
 
     // Our constructor
     public WeatherApplicationClock(Handler h, TextView tv) {

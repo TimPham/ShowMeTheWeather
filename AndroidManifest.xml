@@ -24,6 +24,10 @@
                 <action android:name="android.intent.action.ABOUTWEATHERAPPLICATION"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.smt.weather.WeatherApplicationActivity"
+            />
         </activity>
         <activity android:name=".WeatherApplicationApplicationSettingsActivity"
                   android:label="@string/app_name"
@@ -34,6 +38,10 @@
                 <action android:name="android.intent.action.WEATHERAPPLICATIONSETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.smt.weather.WeatherApplicationActivity"
+            />
         </activity>
         <activity android:name=".WeatherApplicationActivity"
                   android:label="@string/app_name_shorthand"

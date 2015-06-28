@@ -19,8 +19,13 @@ public class WeatherApplicationApplicationAboutActivity extends WeatherApplicati
 
     // Handle GitHub button press
     public void goToGitHubProject(View view) {
+        // Create our intent
         Intent launchGitHubIntent = new Intent(Intent.ACTION_VIEW);
+
+        // Set the data for our intent to the GitHub URL
         launchGitHubIntent.setData(Uri.parse(this.getString(R.string.app_github_link)));
+
+        // Launches the web browser
         startActivity(launchGitHubIntent);
     }
 }

@@ -20,7 +20,7 @@ public class WeatherApplicationStartActivity extends Activity {
     // Launches the Weather application activity
     public void startApplication(View view) {
         // Create our intent to launch the Weather application
-        Intent applicationLaunchIntent = new Intent("android.intent.action.WEATHERAPPLICATION");
+        Intent applicationLaunchIntent = new Intent(this, WeatherApplicationActivity.class);
 
         // Start the Weather application activity
         startActivity(applicationLaunchIntent);

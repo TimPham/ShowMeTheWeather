@@ -2,16 +2,31 @@
 <resources>
     <string name="app_name">Show Me The Weather</string>
     <string name="app_name_shorthand">SMTW!</string>
-    <string name="app_github_label">Go To ShowMeTheWeather Project on GitHub</string>
+    <string name="app_github_label">GitHub Project</string>
     <string name="app_github_link">https://github.com/TimPham/ShowMeTheWeather</string>
     <string name="app_version">Version 0.1</string>
     <string name="app_description">Determines the weather conditions, history and forecast by city or GPS location.</string>
     <string name="app_return">Go Back</string>
     <string name="app_addcity">Add City</string>
     <string name="app_removecity">Remove City</string>
-    <string name="app_additionalitems">...</string>
+    <string name="app_additionalitems">&#8230;</string>
     <string name="app_settingsmenu">Settings</string>
+    <string name="app_clear_locations">Clear Stored Locations</string>
+    <string name="app_clear_locations_confirm">Are you sure you want to clear your locations?</string>
+    <string name="app_clear_configuration">Clear Stored Application Settings</string>
+    <string name="app_clear_configuration_confirm">Are you sure you want to clear your application settings?</string>
+    <string name="app_save">Save</string>
+    <string name="app_cancel">Cancel</string>
     <string name="app_aboutmenu">About</string>
     <string name="app_start">Acknowledged, Show Me The Weather!</string>
     <string name="app_disclaimer">By using this application, you acknowledge that the application may collect information pertaining to your location to report weather in your area.</string>
+    <string name="app_config_unit">Temperature Unit</string>
+    <string-array name="app_config_unit_options">
+        <item>Kelvin</item>
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </string-array>
+    <string name="app_config_geo">Geolocation</string>
+    <string name="app_config_enabled">Enable</string>
+    <string name="app_config_disabled">Disable</string>
 </resources>
