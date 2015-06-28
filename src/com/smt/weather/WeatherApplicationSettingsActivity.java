@@ -10,7 +10,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 
 // Our Settings activity which contains application settings
-public class WeatherApplicationApplicationSettingsActivity extends WeatherApplicationSubActivity {
+public class WeatherApplicationSettingsActivity extends WeatherApplicationSubActivity {
     // The spinner used for the Temperature Unit option
     private Spinner conf_spinner;
 

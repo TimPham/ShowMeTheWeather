@@ -56,7 +56,7 @@ public class WeatherApplicationActivity extends Activity {
         // Initialize our SQLite database configuration object
         this.waConfiguration = new WeatherApplicationConfiguration(this);
 
-        // Read Configuration from SQLite
+        // Read Configuration from our SQLite database
         this.hmConfiguration = this.waConfiguration.getConfigurationData();
     }
 
@@ -90,7 +90,7 @@ public class WeatherApplicationActivity extends Activity {
             case R.id.settingsMenu:
                 // Show Weather Settings activity
                 // Create our intent to launch the Weather Settings activity
-                Intent showApplicationSettingsIntent = new Intent(this, WeatherApplicationApplicationSettingsActivity.class);
+                Intent showApplicationSettingsIntent = new Intent(this, WeatherApplicationSettingsActivity.class);
 
                 // Pass the configuration data
                 // Create a bundle that will hold our data
@@ -125,7 +125,7 @@ public class WeatherApplicationActivity extends Activity {
             case R.id.aboutMenu:
                 // Show About activity
                 // Create our intent to launch the About activity
-                Intent showApplicationInformationIntent = new Intent(this, WeatherApplicationApplicationAboutActivity.class);
+                Intent showApplicationInformationIntent = new Intent(this, WeatherApplicationAboutActivity.class);
 
                 // Start the About activity
                 startActivity(showApplicationInformationIntent);

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 // Our About activity which shows application information
-public class WeatherApplicationApplicationAboutActivity extends WeatherApplicationSubActivity {
+public class WeatherApplicationAboutActivity extends WeatherApplicationSubActivity {
     // Initialize the activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
