@@ -8,6 +8,10 @@
     <string name="app_description">Determines the weather conditions, history and forecast by city or GPS location.</string>
     <string name="app_return">Go Back</string>
     <string name="app_addcity">Add City</string>
+    <string name="app_add">Add</string>
+    <string name="app_addlocation">Add Location</string>
+    <string name="app_location_hint">Location</string>
+    <string name="app_location_geo">Use Current Location</string>
     <string name="app_removecity">Remove City</string>
     <string name="app_additionalitems">&#8230;</string>
     <string name="app_settingsmenu">Settings</string>

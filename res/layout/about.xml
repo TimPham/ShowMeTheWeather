@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
     >
         <TextView
             android:layout_width="wrap_content"
@@ -47,34 +47,29 @@
             android:id="@+id/applicationAboutDescription"
         />
     </LinearLayout>
-
-    <!-- Return button -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:weightSum="1"
     >
+        <!-- Return button -->
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_weight="0.5"
             android:text="@string/app_return"
             android:id="@+id/btnReturnApplication"
             android:onClick="returnToApplication"
         />
-    </RelativeLayout>
-
-    <!-- GitHub Project button -->
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+        <!-- GitHub Project button -->
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_weight="0.5"
             android:text="@string/app_github_label"
             android:id="@+id/btnGoToGitHub"
             android:onClick="goToGitHubProject"
         />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

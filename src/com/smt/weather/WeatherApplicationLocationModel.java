@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 public class WeatherApplicationLocationModel extends WeatherApplicationDB {
@@ -82,13 +84,65 @@ public class WeatherApplicationLocationModel extends WeatherApplicationDB {
         return sData;
     }
 
+    // Retrieve our list of stored locations
+    public LinkedHashSet<String> getLocationsSet() {
+        // Initialize our HashSet which will hold our location data
+        LinkedHashSet<String> sData = new LinkedHashSet<>();
+
+        // Get our location data
+        try {
+            // Get SQLite Database object
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            // Run query to retrieve locations
+            Cursor cursor = db.query(
+                    WeatherApplicationLocationModel.TABLE_NAME,
+                    WeatherApplicationLocationModel.COLUMNS,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            // Check if there is a result we can process
+            if (cursor.getCount() > 0) {
+                // Go through the entire list
+                while(cursor.moveToNext()) {
+                    // Add to the list
+                    // Determine if the string is empty
+                    String value = cursor.getString(cursor.getColumnIndex(WeatherApplicationLocationModel.COLUMN_DATA));
+                    // We will not copy the data if the string is empty!
+                    if (value.length() > 0) {
+                        // Copy the data since the string is not empty!
+                        sData.add(value);
+                    }
+                }
+            }
+
+            // Close cursor since we don't need it anymore
+            cursor.close();
+        }
+        catch (Exception e) { }
+
+        // Return data
+        return sData;
+    }
+
+    // Save the location data using a HashMap
     public boolean saveLocations(HashMap<Integer, String> hs) {
         // Save our location data
         try {
             // Get SQLite Database object
             SQLiteDatabase db = this.getWritableDatabase();
 
-            // Container to hold the parameters to update
+            // Keep track of how many rows we saved or replaced
+            long rowsSavedOrReplaced = 0;
+
+            // Variables used in our loop
+            // The status code returned by db.insertWithOnConflict
+            long success;
+            // Our container to hold parameters to insert/replace
             ContentValues columns_data = new ContentValues();
 
             // Loop through the HashMap to convert to Key => Value
@@ -98,20 +152,92 @@ public class WeatherApplicationLocationModel extends WeatherApplicationDB {
                 Integer key = entry.getKey();
                 String value = entry.getValue();
 
+                // Clear our container
+                columns_data.clear();
+
                 // Add the value
-                columns_data.put(String.valueOf(key), value);
+                columns_data.put(WeatherApplicationLocationModel.TABLE_PK, String.valueOf(key));
+                columns_data.put(WeatherApplicationLocationModel.COLUMN_DATA, value);
+
+                // Run query to update locations
+                success = db.insertWithOnConflict(
+                    WeatherApplicationLocationModel.TABLE_NAME,
+                    null,
+                    columns_data,
+                    SQLiteDatabase.CONFLICT_REPLACE
+                );
+
+                // Successful insert/replace?
+                if (success == 1) {
+                    // Yes, increase the counter
+                    rowsSavedOrReplaced++;
+                }
             }
 
-            // Run query to update locations
-            long success = db.insertWithOnConflict(
-                WeatherApplicationConfigurationModel.TABLE_NAME,
-                null,
-                columns_data,
-                SQLiteDatabase.CONFLICT_REPLACE
-            );
-
             // Did we insert/replace everything?
-            if (success == hs.size()) {
+            if (rowsSavedOrReplaced == hs.size()) {
+                // Yes
+                return true;
+            }
+        }
+        catch (Exception e) { }
+
+        // Couldn't save, or only a partial save!
+        return false;
+    }
+
+    // Save the location data using a HashSet
+    public boolean saveLocations(LinkedHashSet<String> hs) {
+        // Save our location data
+        try {
+            // Get SQLite Database object
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Purge the table
+            this.clearLocationData();
+
+            // Keep track of how many rows we saved or replaced
+            long rowsSavedOrReplaced = 0;
+
+            // Variables used in our loop
+            // The status code returned by db.insertWithOnConflict
+            long success;
+            // Our container to hold parameters to insert/replace
+            ContentValues columns_data = new ContentValues();
+
+            // Counter
+            long rowCounter = 0;
+
+            // Loop through the HashMap to convert to Key => Value
+            // Use the new enhanced for statement!
+            for (String location : hs) {
+                // Clear our container
+                columns_data.clear();
+
+                // Add the value
+                columns_data.put(WeatherApplicationLocationModel.TABLE_PK, String.valueOf(rowCounter));
+                columns_data.put(WeatherApplicationLocationModel.COLUMN_DATA, location);
+
+                // Run query to update locations
+                success = db.insertWithOnConflict(
+                        WeatherApplicationLocationModel.TABLE_NAME,
+                        null,
+                        columns_data,
+                        SQLiteDatabase.CONFLICT_REPLACE
+                );
+
+                // Successful insert?
+                if (success == 1) {
+                    // Yes, increase the insert counter
+                    rowsSavedOrReplaced++;
+                }
+
+                // Increment our counter
+                rowCounter++;
+            }
+
+            // Did we insert everything?
+            if (rowsSavedOrReplaced == hs.size()) {
                 // Yes
                 return true;
             }

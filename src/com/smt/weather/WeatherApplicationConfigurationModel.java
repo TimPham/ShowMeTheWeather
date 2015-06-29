@@ -33,14 +33,14 @@ public class WeatherApplicationConfigurationModel extends WeatherApplicationDB {
         // Call WeatherApplicationDB constructor!
         super(context);
 
-        // The onCreate method doesn't get invoked unless the SQLite database is missing/not created.
         // I have added this here to ensure that the table exists!
+        // The onCreate method doesn't get invoked unless the SQLite database doesn't
         // Try to create the table if it doesn't exist
         try {
             // Get SQLite Database object
             SQLiteDatabase db = this.getWritableDatabase();
 
-            // Try to create table -- if it already exists nothing will happen!
+            // Create table!
             db.execSQL(WeatherApplicationConfigurationModel.TABLE_CREATE_QUERY);
         }
         catch (Exception e) { }

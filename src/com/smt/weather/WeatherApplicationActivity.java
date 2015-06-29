@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 
 // Our Application activity which handles client input
 public class WeatherApplicationActivity extends Activity {
@@ -32,11 +33,17 @@ public class WeatherApplicationActivity extends Activity {
     // Field for our WeatherApplicationClock object
     private WeatherApplicationClock waClock;
 
-    // Field for our WeatherApplicationConfiguration object
-    private WeatherApplicationConfiguration waConfiguration;
+    // Field for our WeatherApplicationConfigurationModel object
+    private WeatherApplicationConfigurationModel waConfiguration;
 
     // Configuration for our WeatherApplicationActivity
     private HashMap<String, Integer> hmConfiguration;
+
+    // Field for our WeatherApplicationLocation object
+    private WeatherApplicationLocationModel waLocation;
+
+    // List of Cities/Lat-Long etc.
+    private LinkedHashSet<String> hsListOfLocations;
 
     // Initialize the activity
     @Override
@@ -54,10 +61,16 @@ public class WeatherApplicationActivity extends Activity {
         this.waClock = new WeatherApplicationClock(handler, (TextView) this.findViewById(R.id.currentTime));
 
         // Initialize our SQLite database configuration object
-        this.waConfiguration = new WeatherApplicationConfiguration(this);
+        this.waConfiguration = new WeatherApplicationConfigurationModel(this);
 
         // Read Configuration from our SQLite database
         this.hmConfiguration = this.waConfiguration.getConfigurationData();
+
+        // Initialize our SQLite database location object
+        this.waLocation = new WeatherApplicationLocationModel(this);
+
+        // Read list of cities from our SQLite database
+        this.hsListOfLocations = this.waLocation.getLocationsSet();
     }
 
     // Initialize our application's menu
@@ -79,10 +92,33 @@ public class WeatherApplicationActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Process menu item selection
+        Bundle bundle = null;
         switch (item.getItemId()) {
             // Determine which menu item was chosen
             case R.id.addCity:
-                // Show Add City Dialog
+                // Show Add City Activity
+                // Create our intent to launch the Add City activity
+                Intent showAddCityIntent = new Intent(this, WeatherApplicationAddActivity.class);
+
+                // Pass the configuration data
+                // Create a bundle that will hold our data
+                bundle = new Bundle();
+
+                // Geolocation Setting
+                if (this.hmConfiguration.containsKey("geo")) {
+                    // Copy setting
+                    bundle.putInt("geo", this.hmConfiguration.get("geo"));
+                }
+                else {
+                    // Use default
+                    bundle.putInt("geo", WeatherApplicationConfigurationModel.GEO_ENABLED);
+                }
+
+                // Add bundle
+                showAddCityIntent.putExtras(bundle);
+
+                // Start the Settings activity
+                startActivityForResult(showAddCityIntent, WeatherApplicationActivities.APP_ADDCITY.getValue());
                 return true;
             case R.id.removeCity:
                 // Show Remove City Dialog
@@ -94,7 +130,7 @@ public class WeatherApplicationActivity extends Activity {
 
                 // Pass the configuration data
                 // Create a bundle that will hold our data
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
 
                 // Temperature Unit
                 if (this.hmConfiguration.containsKey("unit")) {
@@ -103,7 +139,7 @@ public class WeatherApplicationActivity extends Activity {
                 }
                 else {
                     // Use default
-                    bundle.putInt("unit", WeatherApplicationConfiguration.UNIT_CELSIUS);
+                    bundle.putInt("unit", WeatherApplicationConfigurationModel.UNIT_CELSIUS);
                 }
 
                 // Geolocation Setting
@@ -113,7 +149,7 @@ public class WeatherApplicationActivity extends Activity {
                 }
                 else {
                     // Use default
-                    bundle.putInt("geo", WeatherApplicationConfiguration.GEO_ENABLED);
+                    bundle.putInt("geo", WeatherApplicationConfigurationModel.GEO_ENABLED);
                 }
 
                 // Add bundle
@@ -185,9 +221,9 @@ public class WeatherApplicationActivity extends Activity {
                         Integer value = bundle.getInt("unit");
 
                         // Check if a valid option was selected
-                        if (value == WeatherApplicationConfiguration.UNIT_KELVIN ||
-                                value == WeatherApplicationConfiguration.UNIT_CELSIUS ||
-                                value == WeatherApplicationConfiguration.UNIT_FAHRENHEIT) {
+                        if (value == WeatherApplicationConfigurationModel.UNIT_KELVIN ||
+                                value == WeatherApplicationConfigurationModel.UNIT_CELSIUS ||
+                                value == WeatherApplicationConfigurationModel.UNIT_FAHRENHEIT) {
                             // Save
                             this.hmConfiguration.put("unit", value);
                         }
@@ -199,8 +235,8 @@ public class WeatherApplicationActivity extends Activity {
                         Integer value = bundle.getInt("geo");
 
                         // Check if a valid option was selected
-                        if (value == WeatherApplicationConfiguration.GEO_DISABLED ||
-                                value == WeatherApplicationConfiguration.GEO_ENABLED) {
+                        if (value == WeatherApplicationConfigurationModel.GEO_DISABLED ||
+                                value == WeatherApplicationConfigurationModel.GEO_ENABLED) {
                             // Save
                             this.hmConfiguration.put("geo", value);
                         }
@@ -212,6 +248,26 @@ public class WeatherApplicationActivity extends Activity {
             }
             else if (requestCode == WeatherApplicationActivities.APP_ADDCITY.getValue()) {
                 // Add City
+                // Ensure we got something in return!
+                if (data != null) {
+                    // Process options
+                    Bundle bundle = data.getExtras();
+
+                    // Location
+                    if (bundle.containsKey("location")) {
+                        // Get value
+                        String value = bundle.getString("location");
+
+                        // Check if a valid option was selected
+                        if (value.length() > 0) {
+                            // Add to the list
+                            this.hsListOfLocations.add(value);
+                        }
+                    }
+
+                    // Save configuration data
+                    this.waLocation.saveLocations(this.hsListOfLocations);
+                }
             }
             else if (requestCode == WeatherApplicationActivities.APP_REMOVECITY.getValue()) {
                 // Remove City
