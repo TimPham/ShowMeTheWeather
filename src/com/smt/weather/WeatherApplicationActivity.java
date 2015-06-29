@@ -222,8 +222,8 @@ public class WeatherApplicationActivity extends Activity {
 
                         // Check if a valid option was selected
                         if (value == WeatherApplicationConfigurationModel.UNIT_KELVIN ||
-                                value == WeatherApplicationConfigurationModel.UNIT_CELSIUS ||
-                                value == WeatherApplicationConfigurationModel.UNIT_FAHRENHEIT) {
+                            value == WeatherApplicationConfigurationModel.UNIT_CELSIUS ||
+                            value == WeatherApplicationConfigurationModel.UNIT_FAHRENHEIT) {
                             // Save
                             this.hmConfiguration.put("unit", value);
                         }
@@ -236,7 +236,7 @@ public class WeatherApplicationActivity extends Activity {
 
                         // Check if a valid option was selected
                         if (value == WeatherApplicationConfigurationModel.GEO_DISABLED ||
-                                value == WeatherApplicationConfigurationModel.GEO_ENABLED) {
+                            value == WeatherApplicationConfigurationModel.GEO_ENABLED) {
                             // Save
                             this.hmConfiguration.put("geo", value);
                         }
@@ -250,7 +250,7 @@ public class WeatherApplicationActivity extends Activity {
                 // Add City
                 // Ensure we got something in return!
                 if (data != null) {
-                    // Process options
+                    // Process input
                     Bundle bundle = data.getExtras();
 
                     // Location
@@ -271,6 +271,32 @@ public class WeatherApplicationActivity extends Activity {
             }
             else if (requestCode == WeatherApplicationActivities.APP_REMOVECITY.getValue()) {
                 // Remove City
+                // Ensure we got something in return!
+                if (data != null) {
+                    // Process data
+                    Bundle bundle = data.getExtras();
+
+                    // Location
+                    if (bundle.containsKey("locations")) {
+                        // Get value
+                        String[] values = bundle.getStringArray("locations");
+
+                        // Purge the list of locations
+                        this.hsListOfLocations.clear();
+
+                        // Ensure that the array is not null
+                        if (values != null) {
+                            // Iterate through the array of values
+                            for (String value : values) {
+                                // Add to the list
+                                this.hsListOfLocations.add(value);
+                            }
+                        }
+                    }
+
+                    // Save configuration data
+                    this.waLocation.saveLocations(this.hsListOfLocations);
+                }
             }
             else {
                 // Not Implemented
