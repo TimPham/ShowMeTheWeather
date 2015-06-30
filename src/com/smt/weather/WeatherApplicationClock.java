@@ -39,7 +39,12 @@ public class WeatherApplicationClock implements Runnable {
         Calendar calendarInstance = Calendar.getInstance();
 
         // Get the hour
-        int hour = calendarInstance.get(Calendar.HOUR_OF_DAY);
+        int hour = calendarInstance.get(Calendar.HOUR);
+        // Correct hour when it's 12 AM!
+        if (hour == 0) {
+            // Set hour to 12:MM:SS AM instead of 00:MM:SS AM
+            hour = 12;
+        }
 
         // Get the minute
         int minute = calendarInstance.get(Calendar.MINUTE);
