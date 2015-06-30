@@ -15,7 +15,7 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/app_location_hint"
+        android:hint="@string/app_location"
         android:id="@+id/locationField"
         android:inputType="text"
     />
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_location_geo"
-        android:id="@+id/addCurrentLocationButton"
+        android:id="@+id/btnAddCurrentLocation"
         android:onClick="getLocation"
         android:layout_gravity="center_horizontal"
     />
@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/app_add"
-            android:id="@+id/addLocationButton"
+            android:id="@+id/btnAddLocation"
             android:onClick="saveLocation"
             android:layout_weight="0.5"
         />
@@ -46,7 +46,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/app_cancel"
-            android:id="@+id/cancelLocationButton"
+            android:id="@+id/btnCancelLocation"
             android:onClick="returnToApplication"
             android:layout_weight="0.5"
         />

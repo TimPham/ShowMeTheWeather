@@ -3,11 +3,14 @@
           package="com.smt.weather"
           android:versionCode="1"
           android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="15"/>
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="22" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+    <application android:allowBackup="false" android:label="@string/app_name" android:icon="@drawable/ic_launcher">
         <activity android:name=".WeatherApplicationStartActivity"
                   android:label="@string/app_name"
                   android:configChanges="orientation"
@@ -24,7 +27,7 @@
                   android:screenOrientation="portrait"
                 >
             <intent-filter>
-                <action android:name="android.intent.action.ABOUTWEATHERAPPLICATION"/>
+                <action android:name="android.intent.action.WEATHERAPPLICATIONADD"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <meta-data
@@ -32,13 +35,41 @@
                     android:value="com.smt.weather.WeatherApplicationActivity"
                     />
         </activity>
+        <activity android:name=".WeatherApplicationForecastActivity"
+                  android:label="@string/app_name"
+                  android:configChanges="orientation"
+                  android:screenOrientation="portrait"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.WEATHERAPPLICATIONFORECAST"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.smt.weather.WeatherApplicationActivity"
+            />
+        </activity>
+        <activity android:name=".WeatherApplicationHistoryActivity"
+                  android:label="@string/app_name"
+                  android:configChanges="orientation"
+                  android:screenOrientation="portrait"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.WEATHERAPPLICATIONHISTORY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.smt.weather.WeatherApplicationActivity"
+            />
+        </activity>
         <activity android:name=".WeatherApplicationAboutActivity"
                   android:label="@string/app_name"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait"
                 >
             <intent-filter>
-                <action android:name="android.intent.action.ABOUTWEATHERAPPLICATION"/>
+                <action android:name="android.intent.action.WEATHERAPPLICATIONABOUT"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <meta-data
@@ -70,6 +101,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="API_KEY"/>
     </application>
 </manifest>

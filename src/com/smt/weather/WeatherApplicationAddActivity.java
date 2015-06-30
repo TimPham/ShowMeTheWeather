@@ -52,7 +52,7 @@ public class WeatherApplicationAddActivity extends WeatherApplicationSubActivity
                 this.locManager = null;
 
                 // Hide Current Location button
-                Button addLocationButton = (Button)this.findViewById(R.id.addCurrentLocationButton);
+                Button addLocationButton = (Button)this.findViewById(R.id.btnAddCurrentLocation);
                 addLocationButton.setVisibility(View.GONE);
             }
         }

@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -45,6 +48,99 @@ public class WeatherApplicationActivity extends Activity {
     // List of Cities/Lat-Long etc.
     private LinkedHashSet<String> hsListOfLocations;
 
+    // Updates the UI
+    public void refreshUI() {
+        TextView noLocLabel = (TextView)this.findViewById(R.id.noLocationLabel);
+        if (this.hsListOfLocations != null) {
+            // Check if noLocLabel is not null
+            if (noLocLabel != null) {
+                // Hide No Locations Label
+                noLocLabel.setVisibility(View.GONE);
+            }
+
+            // Show Elements
+            this.showLocationUI();
+        }
+        else {
+            // Check if noLocLabel is not null
+            if (noLocLabel != null) {
+                // Show No Locations Label
+                noLocLabel.setVisibility(View.VISIBLE);
+            }
+
+            // Hide Elements
+            this.hideLocationUI();
+        }
+    }
+
+    // Shows Weather UI controls
+    private void showLocationUI() {
+        // Shows the Location Elements
+        // Spinner (ie. Dropdown) Title
+        TextView spinnerTitle = (TextView)this.findViewById(R.id.spinnerTitle);
+        if (spinnerTitle != null) {
+            // Show Spinner (ie. Dropdown) Title
+            spinnerTitle.setVisibility(View.VISIBLE);
+        }
+
+        // Spinner (ie. Dropdown) Title
+        Spinner spinnerElement = (Spinner)this.findViewById(R.id.locationOption);
+        if (spinnerElement != null) {
+            // Show Spinner (ie. Dropdown) Title
+            spinnerElement.setVisibility(View.VISIBLE);
+        }
+
+        // Map
+
+        // Forecast Button
+        Button showForecastButton = (Button)this.findViewById(R.id.btnShowForecast);
+        if (showForecastButton != null) {
+            // Show Forecast button
+            showForecastButton.setVisibility(View.VISIBLE);
+        }
+
+        // History Button
+        Button showHistoryButton = (Button)this.findViewById(R.id.btnShowHistory);
+        if (showHistoryButton != null) {
+            // Show History button
+            showHistoryButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    // Hides Weather UI controls
+    private void hideLocationUI() {
+        // Hides the Location Elements
+        // Spinner (ie. Dropdown) Title
+        TextView spinnerTitle = (TextView)this.findViewById(R.id.spinnerTitle);
+        if (spinnerTitle != null) {
+            // Show Spinner (ie. Dropdown) Title
+            spinnerTitle.setVisibility(View.GONE);
+        }
+
+        // Spinner (ie. Dropdown) Title
+        Spinner spinnerElement = (Spinner)this.findViewById(R.id.locationOption);
+        if (spinnerElement != null) {
+            // Show Spinner (ie. Dropdown) Title
+            spinnerElement.setVisibility(View.GONE);
+        }
+
+        // Map
+
+        // Forecast Button
+        Button showForecastButton = (Button)this.findViewById(R.id.btnShowForecast);
+        if (showForecastButton != null) {
+            // Show Forecast button
+            showForecastButton.setVisibility(View.GONE);
+        }
+
+        // History Button
+        Button showHistoryButton = (Button)this.findViewById(R.id.btnShowHistory);
+        if (showHistoryButton != null) {
+            // Show History button
+            showHistoryButton.setVisibility(View.GONE);
+        }
+    }
+
     // Initialize the activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +154,7 @@ public class WeatherApplicationActivity extends Activity {
         setContentView(R.layout.main);
 
         // Create our WeatherApplicationClock object
-        this.waClock = new WeatherApplicationClock(handler, (TextView) this.findViewById(R.id.currentTime));
+        this.waClock = new WeatherApplicationClock(handler, (TextView)this.findViewById(R.id.currentTime));
 
         // Initialize our SQLite database configuration object
         this.waConfiguration = new WeatherApplicationConfigurationModel(this);
@@ -71,6 +167,9 @@ public class WeatherApplicationActivity extends Activity {
 
         // Read list of cities from our SQLite database
         this.hsListOfLocations = this.waLocation.getLocationsSet();
+
+        // Update the Main Activity View UI
+        this.refreshUI();
     }
 
     // Initialize our application's menu
@@ -95,7 +194,7 @@ public class WeatherApplicationActivity extends Activity {
         Bundle bundle = null;
         switch (item.getItemId()) {
             // Determine which menu item was chosen
-            case R.id.addCity:
+            case R.id.btnAddCity:
                 // Show Add City Activity
                 // Create our intent to launch the Add City activity
                 Intent showAddCityIntent = new Intent(this, WeatherApplicationAddActivity.class);
@@ -120,10 +219,10 @@ public class WeatherApplicationActivity extends Activity {
                 // Start the Settings activity
                 startActivityForResult(showAddCityIntent, WeatherApplicationActivities.APP_ADDCITY.getValue());
                 return true;
-            case R.id.removeCity:
+            case R.id.btnRemoveCity:
                 // Show Remove City Dialog
                 return true;
-            case R.id.settingsMenu:
+            case R.id.btnSettingsMenu:
                 // Show Weather Settings activity
                 // Create our intent to launch the Weather Settings activity
                 Intent showApplicationSettingsIntent = new Intent(this, WeatherApplicationSettingsActivity.class);
@@ -158,7 +257,7 @@ public class WeatherApplicationActivity extends Activity {
                 // Start the Settings activity
                 startActivityForResult(showApplicationSettingsIntent, WeatherApplicationActivities.APP_SETTINGS.getValue());
                 return true;
-            case R.id.aboutMenu:
+            case R.id.btnAboutMenu:
                 // Show About activity
                 // Create our intent to launch the About activity
                 Intent showApplicationInformationIntent = new Intent(this, WeatherApplicationAboutActivity.class);
@@ -267,6 +366,9 @@ public class WeatherApplicationActivity extends Activity {
 
                     // Save configuration data
                     this.waLocation.saveLocations(this.hsListOfLocations);
+
+                    // Update the Main Activity View UI
+                    this.refreshUI();
                 }
             }
             else if (requestCode == WeatherApplicationActivities.APP_REMOVECITY.getValue()) {
@@ -302,5 +404,41 @@ public class WeatherApplicationActivity extends Activity {
                 // Not Implemented
             }
         }
+    }
+
+    // Show Forecast
+    public void showForecast(View view) {
+        // Show Weather Settings activity
+        // Create our intent to launch the Weather Settings activity
+        Intent showForecastIntent = new Intent(this, WeatherApplicationForecastActivity.class);
+
+        // Create a bundle that will hold our data
+        Bundle bundle = new Bundle();
+
+        // Get selected location
+
+        // Add bundle
+        showForecastIntent.putExtras(bundle);
+
+        // Start the Forecast activity
+        startActivity(showForecastIntent);
+    }
+
+    // Show History
+    public void showHistory(View view) {
+        // Show Weather Settings activity
+        // Create our intent to launch the Weather Settings activity
+        Intent showHistoryIntent = new Intent(this, WeatherApplicationHistoryActivity.class);
+
+        // Create a bundle that will hold our data
+        Bundle bundle = new Bundle();
+
+        // Get selected location
+
+        // Add bundle
+        showHistoryIntent.putExtras(bundle);
+
+        // Start the Forecast activity
+        startActivity(showHistoryIntent);
     }
 }

@@ -4,10 +4,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 >
+    <!-- Message when no locations are available. -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
+        android:text="@string/app_location_add_message"
+        android:id="@+id/noLocationLabel"
+    />
+
+    <!-- Location Label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/app_location"
+        android:id="@+id/spinnerTitle"
+        android:visibility="gone"
+    />
+
+    <!-- Location Spinner -->
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:id="@+id/locationOption"
+        android:prompt="@string/app_location_none"
+        android:visibility="gone"
+    />
+
+    <!-- Map -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+    >
+        <!-- Forecast Button -->
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/app_forecast"
+            android:id="@+id/btnShowForecast"
+            android:onClick="showForecast"
+            android:visibility="gone"
+        />
+
+        <!-- History Button -->
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/app_history"
+            android:id="@+id/btnShowHistory"
+            android:onClick="showHistory"
+            android:visibility="gone"
+        />
+    </LinearLayout>
+
+    <!-- Current Time -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text=""
         android:id="@+id/currentTime"
     />

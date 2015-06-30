@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_save"
-            android:id="@+id/saveButton"
+            android:id="@+id/btnSave"
             android:onClick="saveConfiguration"
             android:layout_weight="0.50"
         />
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_cancel"
-            android:id="@+id/cancelButton"
+            android:id="@+id/btnCancel"
             android:onClick="returnToApplication"
             android:layout_weight="0.50"
         />

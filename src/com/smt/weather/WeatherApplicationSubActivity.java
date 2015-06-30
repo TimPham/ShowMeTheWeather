@@ -29,7 +29,7 @@ public class WeatherApplicationSubActivity extends Activity {
         // Process menu item selection
         switch (item.getItemId()) {
             // Determine which menu item was chosen
-            case R.id.backButton:
+            case R.id.btnBack:
                 // Go back to the WeatherApplicationActivity activity
                 this.finish();
                 return true;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Add Back button -->
-    <item android:id="@+id/backButton" android:icon="@drawable/ic_launcher" android:title="@string/app_return" android:showAsAction="always"/>
+    <item android:id="@+id/btnBack" android:icon="@drawable/ic_launcher" android:title="@string/app_return" android:showAsAction="always"/>
 </menu>
