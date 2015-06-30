@@ -17,7 +17,7 @@
                   android:screenOrientation="portrait"
                 >
             <intent-filter>
-                <action android:name="android.intent.action.SPLASH"/>
+                <action android:name="android.intent.action.WEATHERAPPLICATIONSPLASH"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -97,7 +97,7 @@
                   android:screenOrientation="portrait"
                 >
             <intent-filter>
-                <action android:name="android.intent.action.WEATHERAPPLICATION"/>
+                <action android:name="android.intent.action.WEATHERAPPLICATIONACTIVITY"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

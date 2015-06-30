@@ -8,15 +8,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 // Our Application activity which handles client input
-public class WeatherApplicationActivity extends Activity {
+public class WeatherApplicationActivity extends Activity implements AdapterView.OnItemSelectedListener {
     public static enum WeatherApplicationActivities {
         APP_SETTINGS(0),
         APP_ADDCITY(1),
@@ -47,6 +45,9 @@ public class WeatherApplicationActivity extends Activity {
 
     // List of Cities/Lat-Long etc.
     private LinkedHashSet<String> hsListOfLocations;
+
+    // Location Spinner object
+    private Spinner spinnerElement;
 
     // Updates the UI
     public void refreshUI() {
@@ -83,11 +84,39 @@ public class WeatherApplicationActivity extends Activity {
             spinnerTitle.setVisibility(View.VISIBLE);
         }
 
-        // Spinner (ie. Dropdown) Title
-        Spinner spinnerElement = (Spinner)this.findViewById(R.id.locationOption);
-        if (spinnerElement != null) {
-            // Show Spinner (ie. Dropdown) Title
-            spinnerElement.setVisibility(View.VISIBLE);
+        // Spinner (ie. Dropdown)
+        if (this.spinnerElement != null) {
+            // Convert from LinkedHashSet to String[]
+            int number_locations = this.hsListOfLocations.size();
+
+            // Only create if the number of locations is > 0
+            if (number_locations > 0) {
+                // Initialize our array of strings to hold the locations
+                String[] locations = new String[number_locations];
+
+                // Copy the strings
+                int location_counter = 0;
+                for (String location : this.hsListOfLocations) {
+                    if (location_counter < number_locations) {
+                        locations[location_counter] = location;
+                    }
+                    location_counter++;
+                }
+
+                // Create our data adapter
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                // Update Spinner content
+                this.spinnerElement.setAdapter(adapter);
+            }
+            else {
+                // Purge data
+                this.spinnerElement.setAdapter(null);
+            }
+
+            // Show Spinner (ie. Dropdown)
+            this.spinnerElement.setVisibility(View.VISIBLE);
         }
 
         // Map
@@ -117,11 +146,14 @@ public class WeatherApplicationActivity extends Activity {
             spinnerTitle.setVisibility(View.GONE);
         }
 
-        // Spinner (ie. Dropdown) Title
-        Spinner spinnerElement = (Spinner)this.findViewById(R.id.locationOption);
-        if (spinnerElement != null) {
-            // Show Spinner (ie. Dropdown) Title
-            spinnerElement.setVisibility(View.GONE);
+        // Spinner (ie. Dropdown)
+        this.spinnerElement = (Spinner)this.findViewById(R.id.locationOption);
+        if (this.spinnerElement != null) {
+            // Purge data
+            this.spinnerElement.setAdapter(null);
+
+            // Show Spinner (ie. Dropdown)
+            this.spinnerElement.setVisibility(View.GONE);
         }
 
         // Map
@@ -139,6 +171,15 @@ public class WeatherApplicationActivity extends Activity {
             // Show History button
             showHistoryButton.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        // Change Location
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     // Initialize the activity
@@ -167,6 +208,13 @@ public class WeatherApplicationActivity extends Activity {
 
         // Read list of cities from our SQLite database
         this.hsListOfLocations = this.waLocation.getLocationsSet();
+
+        // Bind Spinner (ie. Dropdown) item listener
+        this.spinnerElement = (Spinner)this.findViewById(R.id.locationOption);
+        if (this.spinnerElement != null) {
+            // Bind item listener
+            this.spinnerElement.setOnItemSelectedListener(this);
+        }
 
         // Update the Main Activity View UI
         this.refreshUI();
@@ -415,13 +463,23 @@ public class WeatherApplicationActivity extends Activity {
         // Create a bundle that will hold our data
         Bundle bundle = new Bundle();
 
-        // Get selected location
+        // Get selected location from the Spinner
+        if (this.spinnerElement != null) {
+            // Get selected location
+            String selectedLocation = this.spinnerElement.getSelectedItem().toString();
 
-        // Add bundle
-        showForecastIntent.putExtras(bundle);
+            // Make sure that something was selected
+            if (selectedLocation != null && selectedLocation.length() > 0) {
+                // Pass location to the Forecast Activity
+                bundle.putString("location", selectedLocation);
 
-        // Start the Forecast activity
-        startActivity(showForecastIntent);
+                // Add bundle
+                showForecastIntent.putExtras(bundle);
+
+                // Start the Forecast activity
+                startActivity(showForecastIntent);
+            }
+        }
     }
 
     // Show History
@@ -433,12 +491,22 @@ public class WeatherApplicationActivity extends Activity {
         // Create a bundle that will hold our data
         Bundle bundle = new Bundle();
 
-        // Get selected location
+        // Get selected location from the Spinner
+        if (this.spinnerElement != null) {
+            // Get selected location
+            String selectedLocation = this.spinnerElement.getSelectedItem().toString();
 
-        // Add bundle
-        showHistoryIntent.putExtras(bundle);
+            // Make sure that something was selected
+            if (selectedLocation != null && selectedLocation.length() > 0) {
+                // Pass location to the History Activity
+                bundle.putString("location", selectedLocation);
 
-        // Start the Forecast activity
-        startActivity(showHistoryIntent);
+                // Add bundle
+                showHistoryIntent.putExtras(bundle);
+
+                // Start the Forecast activity
+                startActivity(showHistoryIntent);
+            }
+        }
     }
 }

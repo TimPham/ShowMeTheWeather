@@ -35,17 +35,25 @@ public class WeatherApplicationSettingsActivity extends WeatherApplicationSubAct
 
             // Update the spinner to reflect the current setting
             this.conf_spinner = (Spinner)this.findViewById(R.id.temperatureOption);
-            this.conf_spinner.setSelection(temperature_config_option);
+            if (temperature_config_option != null) {
+                // Changed selection
+                this.conf_spinner.setSelection(temperature_config_option);
+            }
 
             // Update our switch to reflect the current setting
             this.conf_switch = (Switch)this.findViewById(R.id.geolocationOption);
             // Determine which option is chosen
-            if (geo_config_option == WeatherApplicationConfigurationModel.GEO_DISABLED) {
-                // Disabled
-                this.conf_switch.setChecked(false);
+            if (geo_config_option != null) {
+                if (geo_config_option == WeatherApplicationConfigurationModel.GEO_DISABLED) {
+                    // Disabled
+                    this.conf_switch.setChecked(false);
+                } else {
+                    // Enabled (default), no option chosen or invalid option, we'll make the assumption it is enabled
+                    this.conf_switch.setChecked(true);
+                }
             }
             else {
-                // Enabled (default), no option chosen or invalid option, we'll make the assumption it is enabled
+                // Use default (Enabled)
                 this.conf_switch.setChecked(true);
             }
         }
